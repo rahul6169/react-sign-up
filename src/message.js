@@ -1,5 +1,6 @@
 const Signup = () => {
   const onChange = (e) => {
+    console.log("working");
     console.log(e.target.value);
   };
   return (
@@ -12,7 +13,7 @@ const Signup = () => {
           <input
             type="text"
             id="userName"
-            onChange={onChange}
+            // onChange={onChange}
             placeholder="Enter Your Name"
           ></input>
         </div>
@@ -38,7 +39,7 @@ const Signup = () => {
           <input
             type="text"
             id="contactName"
-            onChange={onChange}
+            // onChange={onChange}
             placeholder="Enter Your Name"
           ></input>
         </div>
@@ -176,7 +177,12 @@ const Signup = () => {
         </div>
 
         <div>
-          <button type="submit" id="submitButton" value="Submit">
+          <button
+            type="submit"
+            onClick={onChange}
+            id="submitButton"
+            value="Submit"
+          >
             Submit
           </button>
         </div>
