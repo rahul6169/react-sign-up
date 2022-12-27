@@ -8,3 +8,8 @@ div{
 label{
     padding-right: 5px;
 }
+input[type=text]{
+    box-sizing: border-box;
+    height: 2.5rem;
+    border: 3px solid;
+}
