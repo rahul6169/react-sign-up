@@ -1,7 +1,7 @@
-#newBusiness{
+/* #newBusiness{ */
     /* text-align: center; */
 
-}
+/* } */
 
 h2{
     text-align: center;
@@ -25,11 +25,11 @@ textarea{
     height: 5rem;
     border: 3px solid;
 }
-::placeholder{
+/* ::placeholder{ */
     /* left: 0;
     top: 0;
     transition: transform 120ms ease-in;
     position: absolute;
     transform: translate(0, 0);
     transform-origin: 0 0; */
-}
+/* } */
