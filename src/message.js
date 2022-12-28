@@ -13,6 +13,7 @@ const Signup = () => {
     percent: "",
     dateInput: "",
     payments: "",
+    notesInput: "",
   });
   const handleClick = (event) => {
     event.preventDefault();
@@ -169,6 +170,7 @@ const Signup = () => {
             }}
             id="entrepreneur"
             name="Business"
+            value="entrepreneur"
           />
           <label for="entrepreneur">Entrepreneur</label>
         </label>
@@ -277,7 +279,18 @@ const Signup = () => {
       <div>
         <label>
           Notes<br></br>
-          <textarea id="textArea" cols={30} rows="5"></textarea>
+          <textarea
+            id="textArea"
+            value={form.notesInput}
+            onChange={(e) => {
+              setForm({
+                ...form,
+                notesInput: e.target.value,
+              });
+            }}
+            cols={30}
+            rows="5"
+          ></textarea>
         </label>
       </div>
 
