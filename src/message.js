@@ -305,9 +305,6 @@ const Signup = () => {
         <button type="submit" id="submitButton" value="Submit">
           Submit
         </button>
-        <button type="submit" id="resetButton" value="Submit">
-          reset
-        </button>
       </div>
     </form>
   );
