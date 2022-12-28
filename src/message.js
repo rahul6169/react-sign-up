@@ -12,17 +12,17 @@ const Signup = () => {
     type: "",
     percent: "",
     dateInput: "",
+    payments: "",
   });
-  function handleClick() {
-    // console.log(form);
-    // setForm(form.value);
-  }
+  const handleClick = (event) => {
+    event.preventDefault();
 
-  console.log(form);
+    console.log(form);
+  };
 
   return (
     <form onSubmit={handleClick} id="newBusiness">
-      <h2>New Business</h2>
+      <h2>New Business </h2>
 
       <div>
         <label>User Name </label>
@@ -145,7 +145,6 @@ const Signup = () => {
           <br></br>
           <input
             type="radio"
-            type="radio"
             value={form.type}
             onChange={(e) => {
               setForm({
@@ -155,12 +154,11 @@ const Signup = () => {
             }}
             id="enterprise"
             name="Business"
-            value="Enterprise"
+            value="enterprise"
           />
           <label for="enterprise">Enterprise</label>
           <br></br>
           <input
-            type="radio"
             type="radio"
             value={form.type}
             onChange={(e) => {
@@ -171,7 +169,6 @@ const Signup = () => {
             }}
             id="entrepreneur"
             name="Business"
-            value="Entrepreneur"
           />
           <label for="entrepreneur">Entrepreneur</label>
         </label>
@@ -204,7 +201,6 @@ const Signup = () => {
         <label>
           Percent
           <input
-            type="radio"
             value={form.percent}
             onChange={(e) => {
               setForm({
@@ -224,7 +220,6 @@ const Signup = () => {
         <label>
           Active from
           <input
-            type="radio"
             value={form.dateInput}
             onChange={(e) => {
               setForm({
@@ -239,7 +234,16 @@ const Signup = () => {
       </div>
 
       <div>
-        <label class="payments">
+        <label
+          value={form.payments}
+          onChange={(e) => {
+            setForm({
+              ...form,
+              payments: e.target.value,
+            });
+          }}
+          class="payments"
+        >
           Payment Option<br></br>
           <input
             type="checkbox"
