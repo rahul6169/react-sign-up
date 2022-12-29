@@ -140,7 +140,7 @@ const Signup = () => {
             }}
             id="smallBusiness"
             name="Business"
-            value="smallBusiness"
+            // value="smallBusiness"
           />
           <label for="smallBusiness">Small Business </label>
           <br></br>
@@ -155,7 +155,7 @@ const Signup = () => {
             }}
             id="enterprise"
             name="Business"
-            value="enterprise"
+            // value="enterprise"
           />
           <label for="enterprise">Enterprise</label>
           <br></br>
@@ -170,7 +170,7 @@ const Signup = () => {
             }}
             id="entrepreneur"
             name="Business"
-            value="entrepreneur"
+            // value="entrepreneur"
           />
           <label for="entrepreneur">Entrepreneur</label>
         </label>
