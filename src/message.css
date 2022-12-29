@@ -1,23 +1,28 @@
-/* #newBusiness{ */
+body{
+    background-color: rgb(128, 232, 246);
     /* text-align: center; */
+    /* text-shadow: 10px; */
+    
 
-/* } */
-
+}
 h2{
     text-align: center;
-    color: red;
+    color: rgb(248, 41, 41);
 }
 div{
     padding:0.5rem;
 }
 label{
-    padding-right: 5px;
+    padding-right:10px;
 }
 input[type=text],[type=email],[type=tel],[type=number],[type=date]{
     position: relative;
     box-sizing: border-box;
     height: 2.5rem;
     border: 3px solid;
+    border-radius: 100px;
+    text-align: center;
+    
   
 }
 textarea{
@@ -25,11 +30,16 @@ textarea{
     height: 5rem;
     border: 3px solid;
 }
-/* ::placeholder{ */
-    /* left: 0;
-    top: 0;
-    transition: transform 120ms ease-in;
-    position: absolute;
-    transform: translate(0, 0);
-    transform-origin: 0 0; */
-/* } */
+::placeholder{ 
+    text-align: center;
+    
+}
+th,td{
+    padding: 20px;
+   color: aliceblue;
+    background-color: black;
+}
+
+.tBody{
+overflow-x: scroll;
+}
