@@ -23,8 +23,8 @@ const Signup = () => {
   };
   // useEffect(() => {}, [form]);
 
-  var localStorageData = localStorage.getItem("details");
-  var Data = JSON.parse(localStorageData);
+  // var localStorageData = localStorage.getItem("details");
+  // var Data = JSON.parse(localStorageData);
 
   return (
     <>
@@ -146,6 +146,7 @@ const Signup = () => {
               }}
               id="smallBusiness"
               name="Business"
+              value="SmallBusiness"
             />
             <label for="smallBusiness">Small Business </label>
             <br></br>
@@ -160,6 +161,7 @@ const Signup = () => {
               }}
               id="enterprise"
               name="Business"
+              value="Enterprise"
             />
             <label for="enterprise">Enterprise</label>
             <br></br>
@@ -174,6 +176,7 @@ const Signup = () => {
               }}
               id="entrepreneur"
               name="Business"
+              value="Entrepreneur"
             />
             <label for="entrepreneur">Entrepreneur</label>
           </label>
@@ -310,8 +313,8 @@ const Signup = () => {
           </button>
         </div>
       </form>
-      <table>
-        <thead>
+      <div class="table-data">
+        <table id="list">
           <tr>
             <th>userName</th>
             <th>email</th>
@@ -320,16 +323,29 @@ const Signup = () => {
             <th>contactEmail</th>
             <th>contactPhoneNumber</th>
             <th>type</th>
-            <th>catogory</th>
             <th>percent</th>
             <th>activefrom</th>
             <th>payments</th>
             <th>Notes</th>
           </tr>
-        </thead>
 
-        <tbody class="tBody"></tbody>
-      </table>
+          <tbody class="tableData">
+            <tr>
+              <td>{form.userName}</td>
+              <td>{form.email}</td>
+              <td>{form.number}</td>
+              <td>{form.contactName}</td>
+              <td>{form.contactEmail}</td>
+              <td>{form.contactPhoneNumber}</td>
+              <td>{form.type}</td>
+              <td>{form.percent}</td>
+              <td>{form.dateInput}</td>
+              <td>{form.payments}</td>
+              <td>{form.notesInput}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

@@ -1,7 +1,6 @@
 body{
     background-color: rgb(128, 232, 246);
-    /* text-align: center; */
-    /* text-shadow: 10px; */
+    position: relative;
     
 
 }
@@ -36,10 +35,13 @@ textarea{
 }
 th,td{
     padding: 20px;
-   color: aliceblue;
     background-color: black;
 }
 
-.tBody{
+.table-data{
 overflow-x: scroll;
+}
+#list{
+    background-color:black;
+    color: white;
 }
