@@ -29,7 +29,9 @@ const Signup = () => {
   return (
     <>
       <form onSubmit={handleClick} id="newBusiness">
-        <h2>New Business </h2>
+        <h2>
+          <em>New Business </em>
+        </h2>
 
         <div>
           <label>User Name </label>
@@ -133,7 +135,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label>
+          <label id="typeOfBusiness">
             Type <br></br>
             <input
               type="radio"
@@ -302,7 +304,7 @@ const Signup = () => {
 
         <div>
           <label>
-            Critical Account<br></br>
+            Critical Account
             <input type="checkbox" id="criticalCheckBox"></input>
           </label>
         </div>
