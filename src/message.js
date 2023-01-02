@@ -18,13 +18,14 @@ const Signup = () => {
 
   const handleClick = (event) => {
     event.preventDefault();
-    localStorage.setItem("details", JSON.stringify(form));
+
+    let localStorageData = JSON.parse(localStorage.getItem("details"));
+    if (localStorageData === null) localStorageData = [];
+    localStorageData.push(form);
+    localStorage.setItem("details", JSON.stringify(localStorageData));
+
     console.log(form);
   };
-  // useEffect(() => {}, [form]);
-
-  // var localStorageData = localStorage.getItem("details");
-  // var Data = JSON.parse(localStorageData);
 
   return (
     <>
