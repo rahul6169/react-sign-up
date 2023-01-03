@@ -1,7 +1,10 @@
+import { tab } from "@testing-library/user-event/dist/tab";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+
 const Signup = () => {
+  const [table, setTable] = useState([]);
   const [form, setForm] = useState({
     userName: "",
     email: "",
@@ -25,6 +28,22 @@ const Signup = () => {
     localStorage.setItem("details", JSON.stringify(localStorageData));
 
     console.log(form);
+
+    const newData = {
+      userName: form.userName,
+      email: form.email,
+      number: form.number,
+      contactName: form.contactName,
+      contactEmail: form.contactEmail,
+      contactPhoneNumber: form.contactPhoneNumber,
+      type: form.type,
+      percent: form.percent,
+      dateInput: form.dateInput,
+      payments: form.payments,
+      notesInput: form.notesInput,
+    };
+    const newDatas = [...table, newData];
+    setTable(newDatas);
   };
 
   return (
@@ -333,19 +352,21 @@ const Signup = () => {
           </tr>
 
           <tbody class="tableData">
-            <tr>
-              <td>{form.userName}</td>
-              <td>{form.email}</td>
-              <td>{form.number}</td>
-              <td>{form.contactName}</td>
-              <td>{form.contactEmail}</td>
-              <td>{form.contactPhoneNumber}</td>
-              <td>{form.type}</td>
-              <td>{form.percent}</td>
-              <td>{form.dateInput}</td>
-              <td>{form.payments}</td>
-              <td>{form.notesInput}</td>
-            </tr>
+            {table.map((contact) => (
+              <tr>
+                <td>{contact.userName}</td>
+                <td>{contact.email}</td>
+                <td>{contact.number}</td>
+                <td>{contact.contactName}</td>
+                <td>{contact.contactEmail}</td>
+                <td>{contact.contactPhoneNumber}</td>
+                <td>{contact.type}</td>
+                <td>{contact.percent}</td>
+                <td>{contact.dateInput}</td>
+                <td>{contact.payments}</td>
+                <td>{contact.notesInput}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
