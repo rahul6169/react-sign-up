@@ -1,7 +1,5 @@
-import { tab } from "@testing-library/user-event/dist/tab";
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
 
 const Signup = () => {
   const [table, setTable] = useState([]);
@@ -29,21 +27,24 @@ const Signup = () => {
 
     console.log(form);
 
-    const newData = {
-      userName: form.userName,
-      email: form.email,
-      number: form.number,
-      contactName: form.contactName,
-      contactEmail: form.contactEmail,
-      contactPhoneNumber: form.contactPhoneNumber,
-      type: form.type,
-      percent: form.percent,
-      dateInput: form.dateInput,
-      payments: form.payments,
-      notesInput: form.notesInput,
-    };
-    const newDatas = [...table, newData];
-    setTable(newDatas);
+    // code to display the table data without local storage
+    //   const newData = {
+    //   userName: form.userName,
+    //   email: form.email,
+    //   number: form.number,
+    //   contactName: form.contactName,
+    //   contactEmail: form.contactEmail,
+    //   contactPhoneNumber: form.contactPhoneNumber,
+    //   type: form.type,
+    //   percent: form.percent,
+    //   dateInput: form.dateInput,
+    //   payments: form.payments,
+    //   notesInput: form.notesInput,
+    // };
+    // const newDatas = [...table, newData];
+
+    let loadTableData = [...localStorageData];
+    setTable(loadTableData);
   };
 
   return (
@@ -67,6 +68,7 @@ const Signup = () => {
             id="userName"
             name="userName"
             placeholder="Enter Your Name"
+            required
           ></input>
         </div>
 
@@ -83,6 +85,7 @@ const Signup = () => {
             }}
             id="email"
             placeholder="Enter Your Email"
+            required
           ></input>
         </div>
 
@@ -101,6 +104,7 @@ const Signup = () => {
             minLength={5}
             maxLength={10}
             placeholder="Enter Your Number"
+            required
           ></input>
         </div>
 
@@ -117,6 +121,7 @@ const Signup = () => {
             }}
             id="contactName"
             placeholder="Enter Your Name"
+            required
           ></input>
         </div>
 
@@ -133,6 +138,7 @@ const Signup = () => {
             }}
             id="contactEmail"
             placeholder="Enter Contact Email"
+            required
           ></input>
         </div>
 
@@ -151,6 +157,7 @@ const Signup = () => {
             minLength={5}
             maxLength={10}
             placeholder="Enter Contact Number"
+            required
           ></input>
         </div>
 
@@ -240,6 +247,7 @@ const Signup = () => {
               }}
               type="number"
               id="percent"
+              min="0"
               max="100"
               size="3"
             ></input>
@@ -259,6 +267,7 @@ const Signup = () => {
               }}
               type="date"
               id="activefrom"
+              required
             ></input>
           </label>
         </div>
