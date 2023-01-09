@@ -27,24 +27,55 @@ const Signup = () => {
 
     console.log(form);
 
-    // code to display the table data without local storage
-    //   const newData = {
-    //   userName: form.userName,
-    //   email: form.email,
-    //   number: form.number,
-    //   contactName: form.contactName,
-    //   contactEmail: form.contactEmail,
-    //   contactPhoneNumber: form.contactPhoneNumber,
-    //   type: form.type,
-    //   percent: form.percent,
-    //   dateInput: form.dateInput,
-    //   payments: form.payments,
-    //   notesInput: form.notesInput,
-    // };
-    // const newDatas = [...table, newData];
-
     let loadTableData = [...localStorageData];
     setTable(loadTableData);
+  };
+
+  const handleSubmitForm = (event) => {
+    event.preventDefault();
+    let resetForm = {
+      userName: "",
+      email: "",
+      number: "",
+      contactName: "",
+      contactEmail: "",
+      contactPhoneNumber: "",
+      type: "",
+      percent: "",
+      dateInput: "",
+      payments: "",
+      notesInput: "",
+    };
+    setForm(resetForm);
+  };
+
+  const editTableRows = (index) => {
+    let localStorageData = JSON.parse(localStorage.getItem("details"));
+    let rows = [...localStorageData];
+    var editTable = rows[index];
+    editTable = {
+      userName: editTable.userName,
+      email: editTable.email,
+      number: editTable.number,
+      contactName: editTable.contactName,
+      contactEmail: editTable.contactEmail,
+      contactPhoneNumber: editTable.contactPhoneNumber,
+      type: editTable.type,
+      percent: editTable.percent,
+      dateInput: editTable.dateInput,
+      payments: editTable.payments,
+      notesInput: editTable.notesInput,
+    };
+    setForm(editTable);
+  };
+
+  const deleteTableRows = (index) => {
+    let localStorageData = JSON.parse(localStorage.getItem("details"));
+
+    let rows = [...localStorageData];
+    rows.splice(index, 1);
+    setTable(rows);
+    localStorage.setItem("details", JSON.stringify(rows));
   };
 
   return (
@@ -343,6 +374,16 @@ const Signup = () => {
             Submit
           </button>
         </div>
+        <div>
+          <button
+            type="reset"
+            id="editButton"
+            onClick={handleSubmitForm}
+            value="reset"
+          >
+            Reset
+          </button>
+        </div>
       </form>
       <div class="table-data">
         <table id="list">
@@ -358,11 +399,13 @@ const Signup = () => {
             <th>activefrom</th>
             <th>payments</th>
             <th>Notes</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
 
           <tbody class="tableData">
-            {table.map((contact) => (
-              <tr>
+            {table.map((contact, index) => (
+              <tr key={index}>
                 <td>{contact.userName}</td>
                 <td>{contact.email}</td>
                 <td>{contact.number}</td>
@@ -374,6 +417,24 @@ const Signup = () => {
                 <td>{contact.dateInput}</td>
                 <td>{contact.payments}</td>
                 <td>{contact.notesInput}</td>
+                <td>
+                  <button
+                    type="submit"
+                    id="editButton"
+                    onClick={() => editTableRows(index)}
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="submit"
+                    id="deleteButton"
+                    onClick={() => deleteTableRows(index)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
