@@ -17,12 +17,30 @@ const Signup = () => {
     notesInput: "",
   });
 
-  const handleClick = (event, index) => {
+  const handleClick = (event) => {
     event.preventDefault();
 
     let localStorageData = JSON.parse(localStorage.getItem("details"));
     if (localStorageData === null) localStorageData = [];
-    emailValid(index);
+
+    for (let i = 0; i < localStorageData.length; i++) {
+      if (form.email === localStorageData[i].email) {
+        return alert("email already exists");
+      }
+    }
+
+    for (let i = 0; i < localStorageData.length; i++) {
+      if (form.number === localStorageData[i].number) {
+        return alert("number already exists");
+      }
+    }
+
+    for (let i = 0; i < localStorageData.length; i++) {
+      if (form.contactPhoneNumber === localStorageData[i].contactPhoneNumber) {
+        return alert(" contact phone number already exists");
+      }
+    }
+
     localStorageData.push(form);
     localStorage.setItem("details", JSON.stringify(localStorageData));
 
@@ -46,14 +64,6 @@ const Signup = () => {
     };
     setForm(resetForm);
   };
-
-  function emailValid() {
-    let localStorageData = JSON.parse(localStorage.getItem("details"));
-    if (form.email === localStorageData.email) {
-      alert("email already exists");
-      return;
-    }
-  }
 
   const editTableRows = (index) => {
     let localStorageData = JSON.parse(localStorage.getItem("details"));
