@@ -17,11 +17,12 @@ const Signup = () => {
     notesInput: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event, index) => {
     event.preventDefault();
 
     let localStorageData = JSON.parse(localStorage.getItem("details"));
     if (localStorageData === null) localStorageData = [];
+    emailValid(index);
     localStorageData.push(form);
     localStorage.setItem("details", JSON.stringify(localStorageData));
 
@@ -29,10 +30,7 @@ const Signup = () => {
 
     let loadTableData = [...localStorageData];
     setTable(loadTableData);
-  };
 
-  const handleSubmitForm = (event) => {
-    event.preventDefault();
     let resetForm = {
       userName: "",
       email: "",
@@ -49,23 +47,18 @@ const Signup = () => {
     setForm(resetForm);
   };
 
+  function emailValid() {
+    let localStorageData = JSON.parse(localStorage.getItem("details"));
+    if (form.email === localStorageData.email) {
+      alert("email already exists");
+      return;
+    }
+  }
+
   const editTableRows = (index) => {
     let localStorageData = JSON.parse(localStorage.getItem("details"));
     let rows = [...localStorageData];
     var editTable = rows[index];
-    editTable = {
-      userName: editTable.userName,
-      email: editTable.email,
-      number: editTable.number,
-      contactName: editTable.contactName,
-      contactEmail: editTable.contactEmail,
-      contactPhoneNumber: editTable.contactPhoneNumber,
-      type: editTable.type,
-      percent: editTable.percent,
-      dateInput: editTable.dateInput,
-      payments: editTable.payments,
-      notesInput: editTable.notesInput,
-    };
     setForm(editTable);
   };
 
@@ -77,6 +70,27 @@ const Signup = () => {
     setTable(rows);
     localStorage.setItem("details", JSON.stringify(rows));
   };
+
+  // function displayRadioValue() {
+  //   var ele = document.getElementsByName("Business");
+  //   let selectedValue = "";
+  //   for (let i = 0; i < ele.length; i++) {
+  //     if (ele[i].checked) selectedValue = ele[i].value;
+  //   }
+
+  //   return selectedValue;
+  // }
+
+  // function paymentSelectValue() {
+  //   var ele = document.getElementsByName("payment");
+  //   let selectedValue = [];
+  //   for (let i = 0; i < ele.length; i++) {
+  //     if (ele[i].checked) {
+  //       selectedValue.push(ele[i].value);
+  //     }
+  //   }
+  //   return selectedValue;
+  // }
 
   return (
     <>
@@ -157,7 +171,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label>Email </label>
+          <label> Contact Email </label>
           <input
             type="email"
             value={form.contactEmail}
@@ -193,7 +207,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label id="typeOfBusiness">
+          <label id="typeOfBusiness" className="radioValue">
             Type <br></br>
             <input
               type="radio"
@@ -201,12 +215,13 @@ const Signup = () => {
               onChange={(e) => {
                 setForm({
                   ...form,
-                  type: e.target.value,
+                  type: e.target.id,
                 });
               }}
               id="smallBusiness"
               name="Business"
-              value="SmallBusiness"
+              checked={true}
+              // value="SmallBusiness"
             />
             <label for="smallBusiness">Small Business </label>
             <br></br>
@@ -216,12 +231,13 @@ const Signup = () => {
               onChange={(e) => {
                 setForm({
                   ...form,
-                  type: e.target.value,
+                  type: e.target.id,
                 });
               }}
               id="enterprise"
               name="Business"
-              value="Enterprise"
+              // checked={id}
+              // value="Enterprise"
             />
             <label for="enterprise">Enterprise</label>
             <br></br>
@@ -231,12 +247,13 @@ const Signup = () => {
               onChange={(e) => {
                 setForm({
                   ...form,
-                  type: e.target.value,
+                  type: e.target.id,
                 });
               }}
               id="entrepreneur"
               name="Business"
-              value="Entrepreneur"
+              // checked={id}
+              // value="Entrepreneur"
             />
             <label for="entrepreneur">Entrepreneur</label>
           </label>
@@ -312,7 +329,7 @@ const Signup = () => {
                 payments: e.target.value,
               });
             }}
-            class="payments"
+            class={"payments"}
           >
             Payment Option<br></br>
             <input
@@ -374,35 +391,26 @@ const Signup = () => {
             Submit
           </button>
         </div>
-        <div>
-          <button
-            type="reset"
-            id="editButton"
-            onClick={handleSubmitForm}
-            value="reset"
-          >
-            Reset
-          </button>
-        </div>
       </form>
       <div class="table-data">
         <table id="list">
-          <tr>
-            <th>userName</th>
-            <th>email</th>
-            <th>phoneNumber</th>
-            <th>contactName</th>
-            <th>contactEmail</th>
-            <th>contactPhoneNumber</th>
-            <th>type</th>
-            <th>percent</th>
-            <th>activefrom</th>
-            <th>payments</th>
-            <th>Notes</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-
+          <thead>
+            <tr>
+              <th>userName</th>
+              <th>email</th>
+              <th>phoneNumber</th>
+              <th>contactName</th>
+              <th>contactEmail</th>
+              <th>contactPhoneNumber</th>
+              <th>type</th>
+              <th>percent</th>
+              <th>activefrom</th>
+              <th>payments</th>
+              <th>Notes</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
           <tbody class="tableData">
             {table.map((contact, index) => (
               <tr key={index}>
