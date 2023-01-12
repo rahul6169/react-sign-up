@@ -1,8 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Signup = () => {
   const [table, setTable] = useState([]);
+
   const [form, setForm] = useState({
     userName: "",
     email: "",
@@ -16,11 +17,17 @@ const Signup = () => {
     payments: "",
     notesInput: "",
   });
+
+  useEffect(() => {
+    let localStorageData = JSON.parse(localStorage.getItem("details"));
+    setTable(localStorageData || []);
+  }, []);
+
   const handleClick = (event) => {
     event.preventDefault();
-
     let localStorageData = JSON.parse(localStorage.getItem("details"));
     if (localStorageData === null) localStorageData = [];
+
     for (let i = 0; i < localStorageData.length; i++) {
       if (form.email === localStorageData[i].email) {
         return alert("email already exists");
@@ -28,26 +35,12 @@ const Signup = () => {
         return alert("number already exists");
       }
     }
-
-    // for (let i = 0; i < localStorageData.length; i++) {
-    //   if (form.contactEmail === localStorageData[i].contactEmail) {
-    //     return alert(" contact Email already exists");
-    //   }
-    // }
-
-    // for (let i = 0; i < localStorageData.length; i++) {
-    //   if (form.contactPhoneNumber === localStorageData[i].contactPhoneNumber) {
-    //     return alert(" contact phone number already exists");
-    //   }
-    // }
-
     localStorageData.push(form);
     localStorage.setItem("details", JSON.stringify(localStorageData));
 
     console.log(form);
-
     let loadTableData = [...localStorageData];
-    setTable(loadTableData);
+    setTable(loadTableData || []);
 
     let resetForm = {
       userName: "",
@@ -74,10 +67,11 @@ const Signup = () => {
 
   const deleteTableRows = (index) => {
     let localStorageData = JSON.parse(localStorage.getItem("details"));
-
     let rows = [...localStorageData];
     rows.splice(index, 1);
-    setTable(rows);
+    console.log(rows);
+    setTable(rows || []);
+
     localStorage.setItem("details", JSON.stringify(rows));
   };
 
@@ -230,7 +224,7 @@ const Signup = () => {
               }}
               id="smallBusiness"
               name="Business"
-              checked={true}
+
               // value="SmallBusiness"
             />
             <label for="smallBusiness">Small Business </label>
