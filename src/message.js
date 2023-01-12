@@ -16,30 +16,30 @@ const Signup = () => {
     payments: "",
     notesInput: "",
   });
-
   const handleClick = (event) => {
     event.preventDefault();
 
     let localStorageData = JSON.parse(localStorage.getItem("details"));
     if (localStorageData === null) localStorageData = [];
-
     for (let i = 0; i < localStorageData.length; i++) {
       if (form.email === localStorageData[i].email) {
         return alert("email already exists");
-      }
-    }
-
-    for (let i = 0; i < localStorageData.length; i++) {
-      if (form.number === localStorageData[i].number) {
+      } else if (form.number === localStorageData[i].number) {
         return alert("number already exists");
       }
     }
 
-    for (let i = 0; i < localStorageData.length; i++) {
-      if (form.contactPhoneNumber === localStorageData[i].contactPhoneNumber) {
-        return alert(" contact phone number already exists");
-      }
-    }
+    // for (let i = 0; i < localStorageData.length; i++) {
+    //   if (form.contactEmail === localStorageData[i].contactEmail) {
+    //     return alert(" contact Email already exists");
+    //   }
+    // }
+
+    // for (let i = 0; i < localStorageData.length; i++) {
+    //   if (form.contactPhoneNumber === localStorageData[i].contactPhoneNumber) {
+    //     return alert(" contact phone number already exists");
+    //   }
+    // }
 
     localStorageData.push(form);
     localStorage.setItem("details", JSON.stringify(localStorageData));
