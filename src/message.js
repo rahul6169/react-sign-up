@@ -20,7 +20,9 @@ const Signup = () => {
 
   useEffect(() => {
     let localStorageData = JSON.parse(localStorage.getItem("details"));
-    setTable(localStorageData || []);
+    return () => {
+      setTable(localStorageData || []);
+    };
   }, []);
 
   const handleClick = (event) => {
@@ -74,27 +76,6 @@ const Signup = () => {
 
     localStorage.setItem("details", JSON.stringify(rows));
   };
-
-  // function displayRadioValue() {
-  //   var ele = document.getElementsByName("Business");
-  //   let selectedValue = "";
-  //   for (let i = 0; i < ele.length; i++) {
-  //     if (ele[i].checked) selectedValue = ele[i].value;
-  //   }
-
-  //   return selectedValue;
-  // }
-
-  // function paymentSelectValue() {
-  //   var ele = document.getElementsByName("payment");
-  //   let selectedValue = [];
-  //   for (let i = 0; i < ele.length; i++) {
-  //     if (ele[i].checked) {
-  //       selectedValue.push(ele[i].value);
-  //     }
-  //   }
-  //   return selectedValue;
-  // }
 
   return (
     <>
