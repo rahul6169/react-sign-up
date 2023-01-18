@@ -20,6 +20,7 @@ const Signup = () => {
 
   useEffect(() => {
     let localStorageData = JSON.parse(localStorage.getItem("details"));
+
     return () => {
       setTable(localStorageData || []);
     };
