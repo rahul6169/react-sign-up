@@ -1,5 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
+// useEffect(() => {
+//   axios.get('/get-data')
+//     .then(res => {
+//       setData(res.data);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// }, []);
 
 const Signup = () => {
   const [table, setTable] = useState([]);
@@ -18,15 +27,21 @@ const Signup = () => {
     notesInput: "",
   });
 
-  useEffect(() => {
-    let localStorageData = JSON.parse(localStorage.getItem("details"));
-    return () => {
-      setTable(localStorageData || []);
-    };
-  }, []);
-
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/submit", {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      const a = { data };
+      console.log(a);
+    } catch (error) {
+      console.error(error);
+    }
+
     let localStorageData = JSON.parse(localStorage.getItem("details"));
     if (localStorageData === null) localStorageData = [];
 
@@ -59,6 +74,13 @@ const Signup = () => {
     };
     setForm(resetForm);
   };
+  useEffect(() => {
+    let localStorageData = JSON.parse(localStorage.getItem("details"));
+
+    return () => {
+      setTable(localStorageData || []);
+    };
+  }, []);
 
   const editTableRows = (index) => {
     let localStorageData = JSON.parse(localStorage.getItem("details"));
