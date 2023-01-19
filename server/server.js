@@ -6,14 +6,16 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 storedData = {};
+
 app.post("/submit", (req, res) => {
   storedData = req.body;
-  console.log(storedData);
+  console.log(req.body);
   res.json({ message: "Form data received" });
 });
+
 app.get("/submitt", (req, res) => {
-  console.log(storedData);
-  res.json(storedData);
+  console.log(req.body);
+  res.json(req.body);
 });
 
 app.listen(5000, () => {

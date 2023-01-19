@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import axios from "axios";
 // useEffect(() => {
 //   axios.get('/get-data')
 //     .then(res => {
@@ -30,7 +31,7 @@ const Signup = () => {
   const handleClick = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/submit", {
+      const response = await fetch("http://localhost:5000/submitt", {
         method: "POST",
         body: JSON.stringify(form),
         headers: { "Content-Type": "application/json" },
