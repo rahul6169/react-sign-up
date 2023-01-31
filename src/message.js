@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Signup = () => {
-  const [table, setTable] = useState([]);
-
-  const [form, setForm] = useState({
+  const [merchantList, setMerchantList] = useState();
+  const [button, setButton] = useState("submit");
+  const [formValues, setFormValues] = useState({
     userName: "",
     email: "",
     number: "",
@@ -18,32 +19,86 @@ const Signup = () => {
     notesInput: "",
   });
 
+  // useEffect(() => {
+  //   let localStorageData = JSON.parse(localStorage.getItem("details"));
+
+  //   return () => {
+  //     setMerchantList(localStorageData || []);
+  //   };
+  // }, []);
+
+  const getAllMerchants = async () => {
+    const getAllDataResponse = await axios.get(
+      "http://localhost:5000/getAllMerchants"
+    );
+    // body: J;
+    // console.log(getAllDataResponse?.data);
+    setMerchantList(getAllDataResponse?.data);
+    return true;
+  };
+
   useEffect(() => {
-    let localStorageData = JSON.parse(localStorage.getItem("details"));
-
-    return () => {
-      setTable(localStorageData || []);
-    };
+    getAllMerchants();
   }, []);
+  // useEffect(() => {
+  //   console.log(merchantList);
+  // }, [merchantList]);
 
-  const handleClick = (event) => {
+  const updateMerchant = async (id) => {
+    const getEditDataResponse = await axios.put(
+      `http://localhost:5000/getMerchant/${id}`,
+      { id: id }
+    );
+    console.log(getEditDataResponse?.data);
+    setFormValues(getEditDataResponse?.data);
+    setButton("update");
+    return;
+  };
+
+  const deleteMerchant = async (id) => {
+    const deleteDataResponse = await axios.delete(
+      `http://localhost:5000/deleteMerchant/${id}`
+    );
+    // console.log(id);
+    console.log("data", deleteDataResponse?.data);
+
+    setMerchantList(deleteDataResponse?.data);
+    return;
+  };
+
+  const handleClick = async (event) => {
     event.preventDefault();
-    let localStorageData = JSON.parse(localStorage.getItem("details"));
-    if (localStorageData === null) localStorageData = [];
+    // let localStorageData = JSON.parse(localStorage.getItem("details"));
+    // if (localStorageData === null) localStorageData = [];
 
-    for (let i = 0; i < localStorageData.length; i++) {
-      if (form.email === localStorageData[i].email) {
-        return alert("email already exists");
-      } else if (form.number === localStorageData[i].number) {
-        return alert("number already exists");
-      }
+    try {
+      const createMerchantResponse = await axios.post(
+        "http://localhost:5000/createMerchant",
+        { formValues }
+      );
+      console.log(createMerchantResponse?.data);
+      // const newMerchantData = await createMerchantResponse?.json();
+      setMerchantList((previousMerchantsData) => {
+        return [...previousMerchantsData, createMerchantResponse?.data];
+      });
+      return;
+    } catch (error) {
+      console.error(error);
     }
-    localStorageData.push(form);
-    localStorage.setItem("details", JSON.stringify(localStorageData));
 
-    console.log(form);
-    let loadTableData = [...localStorageData];
-    setTable(loadTableData || []);
+    // for (let i = 0; i < localStorageData.length; i++) {
+    //   if (formValues.email === localStorageData[i].email) {
+    //     return alert("email already exists");
+    //   } else if (formValues.number === localStorageData[i].number) {̥
+    //     return alert("number already exists");
+    //   }
+    // }
+    // localStorageData.push(formValues);
+    // localStorage.setItem("details", JSON.stringify(localStorageData));
+
+    // console.log(formValues);
+    // let loadTableData = [...localStorageData];
+    // setMerchantList(loadTableData || []);
 
     let resetForm = {
       userName: "",
@@ -58,25 +113,25 @@ const Signup = () => {
       payments: "",
       notesInput: "",
     };
-    setForm(resetForm);
+    setFormValues(resetForm);
   };
 
-  const editTableRows = (index) => {
-    let localStorageData = JSON.parse(localStorage.getItem("details"));
-    let rows = [...localStorageData];
-    var editTable = rows[index];
-    setForm(editTable);
-  };
+  // const editTableRows = (index) => {
+  //   let localStorageData = JSON.parse(localStorage.getItem("details"));
+  //   let rows = [...localStorageData];
+  //   var editTable = rows[index];
+  //   setFormValues(editTable);
+  // };
 
-  const deleteTableRows = (index) => {
-    let localStorageData = JSON.parse(localStorage.getItem("details"));
-    let rows = [...localStorageData];
-    rows.splice(index, 1);
-    console.log(rows);
-    setTable(rows || []);
+  // const deleteTableRows = (index) => {
+  //   let localStorageData = JSON.parse(localStorage.getItem("details"));
+  //   let rows = [...localStorageData];
+  // rows.splice(index, 1);
+  //   console.log(rows);
+  //   setMerchantList(rows || []);
 
-    localStorage.setItem("details", JSON.stringify(rows));
-  };
+  //   localStorage.setItem("details", JSON.stringify(rows));
+  // };
 
   return (
     <>
@@ -89,11 +144,13 @@ const Signup = () => {
           <label>User Name </label>
           <input
             type="text"
-            value={form.userName}
+            value={formValues.userName}
             onChange={(e) => {
-              setForm({
-                ...form,
-                userName: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  userName: e.target.value,
+                };
               });
             }}
             id="userName"
@@ -107,11 +164,13 @@ const Signup = () => {
           <label>Email </label>
           <input
             type="email"
-            value={form.email}
+            value={formValues.email}
             onChange={(e) => {
-              setForm({
-                ...form,
-                email: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  email: e.target.value,
+                };
               });
             }}
             id="email"
@@ -124,12 +183,15 @@ const Signup = () => {
           <label>Phone Number</label>
           <input
             type="tel"
-            value={form.number}
+            value={formValues.number}
             onChange={(e) => {
-              setForm({
-                ...form,
-                number: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  number: e.target.value,
+                };
               });
+              // console.log(formValues.number);
             }}
             id="phoneNumber"
             minLength={5}
@@ -143,11 +205,13 @@ const Signup = () => {
           <label>Contact Name </label>
           <input
             type="text"
-            value={form.contactName}
+            value={formValues.contactName}
             onChange={(e) => {
-              setForm({
-                ...form,
-                contactName: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  contactName: e.target.value,
+                };
               });
             }}
             id="contactName"
@@ -160,11 +224,13 @@ const Signup = () => {
           <label> Contact Email </label>
           <input
             type="email"
-            value={form.contactEmail}
+            value={formValues.contactEmail}
             onChange={(e) => {
-              setForm({
-                ...form,
-                contactEmail: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  contactEmail: e.target.value,
+                };
               });
             }}
             id="contactEmail"
@@ -177,11 +243,13 @@ const Signup = () => {
           <label>Phone Number</label>
           <input
             type="tel"
-            value={form.contactPhoneNumber}
+            value={formValues.contactPhoneNumber}
             onChange={(e) => {
-              setForm({
-                ...form,
-                contactPhoneNumber: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  contactPhoneNumber: e.target.value,
+                };
               });
             }}
             id="contactPhoneNumber"
@@ -197,10 +265,10 @@ const Signup = () => {
             Type <br></br>
             <input
               type="radio"
-              value={form.type}
+              value={formValues.type}
               onChange={(e) => {
-                setForm({
-                  ...form,
+                setFormValues({
+                  ...formValues,
                   type: e.target.id,
                 });
               }}
@@ -209,14 +277,14 @@ const Signup = () => {
 
               // value="SmallBusiness"
             />
-            <label for="smallBusiness">Small Business </label>
+            <label htmlFor="smallBusiness">Small Business </label>
             <br></br>
             <input
               type="radio"
-              value={form.type}
+              value={formValues.type}
               onChange={(e) => {
-                setForm({
-                  ...form,
+                setFormValues({
+                  ...formValues,
                   type: e.target.id,
                 });
               }}
@@ -225,14 +293,14 @@ const Signup = () => {
               // checked={id}
               // value="Enterprise"
             />
-            <label for="enterprise">Enterprise</label>
+            <label htmlFor="enterprise">Enterprise</label>
             <br></br>
             <input
               type="radio"
-              value={form.type}
+              value={formValues.type}
               onChange={(e) => {
-                setForm({
-                  ...form,
+                setFormValues({
+                  ...formValues,
                   type: e.target.id,
                 });
               }}
@@ -241,12 +309,12 @@ const Signup = () => {
               // checked={id}
               // value="Entrepreneur"
             />
-            <label for="entrepreneur">Entrepreneur</label>
+            <label htmlFor="entrepreneur">Entrepreneur</label>
           </label>
         </div>
 
         <div>
-          <label for="catogory" class="catogoryy">
+          <label htmlFor="catogory" className="catogoryy">
             Catogory<br></br>
             <select id="catogory" multiple size="5">
               <option name="catogory" value="toys">
@@ -272,10 +340,10 @@ const Signup = () => {
           <label>
             Percent
             <input
-              value={form.percent}
+              value={formValues.percent}
               onChange={(e) => {
-                setForm({
-                  ...form,
+                setFormValues({
+                  ...formValues,
                   percent: e.target.value,
                 });
               }}
@@ -292,10 +360,10 @@ const Signup = () => {
           <label>
             Active from
             <input
-              value={form.dateInput}
+              value={formValues.dateInput}
               onChange={(e) => {
-                setForm({
-                  ...form,
+                setFormValues({
+                  ...formValues,
                   dateInput: e.target.value,
                 });
               }}
@@ -308,14 +376,16 @@ const Signup = () => {
 
         <div>
           <label
-            value={form.payments}
+            value={formValues.payments}
             onChange={(e) => {
-              setForm({
-                ...form,
-                payments: e.target.value,
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  payments: e.target.value,
+                };
               });
             }}
-            class={"payments"}
+            className={"payments"}
           >
             Payment Option<br></br>
             <input
@@ -325,7 +395,7 @@ const Signup = () => {
               id="cashOnDelivery"
               placeholder="cash on delivery"
             />
-            <label for="cashOnDelivery">Cash on delivery</label>
+            <label htmlFor="cashOnDelivery">Cash on delivery</label>
             <br></br>
             <input
               type="checkbox"
@@ -334,7 +404,7 @@ const Signup = () => {
               id="UPI"
               placeholder="payment"
             />
-            <label for="UPI">UPI</label>
+            <label htmlFor="UPI">UPI</label>
             <br></br>
             <input
               type="checkbox"
@@ -343,7 +413,7 @@ const Signup = () => {
               id="cardPayment"
               placeholder="cardPayment"
             />
-            <label for="cardPayment">Card Payment</label>
+            <label htmlFor="cardPayment">Card Payment</label>
           </label>
         </div>
 
@@ -352,10 +422,10 @@ const Signup = () => {
             Notes<br></br>
             <textarea
               id="textArea"
-              value={form.notesInput}
+              value={formValues.notesInput}
               onChange={(e) => {
-                setForm({
-                  ...form,
+                setFormValues({
+                  ...formValues,
                   notesInput: e.target.value,
                 });
               }}
@@ -374,11 +444,11 @@ const Signup = () => {
 
         <div>
           <button type="submit" id="submitButton" value="Submit">
-            Submit
+            {button}
           </button>
         </div>
       </form>
-      <div class="table-data">
+      <div className="table-data">
         <table id="list">
           <thead>
             <tr>
@@ -397,25 +467,26 @@ const Signup = () => {
               <th>Delete</th>
             </tr>
           </thead>
-          <tbody class="tableData">
-            {table.map((contact, index) => (
-              <tr key={index}>
-                <td>{contact.userName}</td>
-                <td>{contact.email}</td>
-                <td>{contact.number}</td>
-                <td>{contact.contactName}</td>
-                <td>{contact.contactEmail}</td>
-                <td>{contact.contactPhoneNumber}</td>
-                <td>{contact.type}</td>
-                <td>{contact.percent}</td>
-                <td>{contact.dateInput}</td>
-                <td>{contact.payments}</td>
-                <td>{contact.notesInput}</td>
+          <tbody className="tableData">
+            {merchantList?.map((merchant, index) => (
+              <tr key={merchant?.id + index}>
+                <td>{merchant?.userName}</td>
+                <td>{merchant?.email}</td>
+                <td>{merchant?.number}</td>
+                <td>{merchant?.contactName}</td>
+                <td>{merchant?.contactEmail}</td>
+                <td>{merchant?.contactPhoneNumber}</td>
+                <td>{merchant?.type}</td>
+                <td>{merchant?.percent}</td>
+                <td>{merchant?.dateInput}</td>
+                <td>{merchant?.payments}</td>
+                <td>{merchant?.notesInput}</td>
                 <td>
                   <button
                     type="submit"
                     id="editButton"
-                    onClick={() => editTableRows(index)}
+                    // onClick={updateMerchant}
+                    onClick={() => updateMerchant(merchant?.id)}
                   >
                     Edit
                   </button>
@@ -424,7 +495,7 @@ const Signup = () => {
                   <button
                     type="submit"
                     id="deleteButton"
-                    onClick={() => deleteTableRows(index)}
+                    onClick={() => deleteMerchant(merchant?.id)}
                   >
                     Delete
                   </button>
