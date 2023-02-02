@@ -20,7 +20,7 @@ const Signup = () => {
   });
 
   // useEffect(() => {
-  //   let localStorageData = JSON.parse(localStorage.getItem("details"));
+  //   let localStorageData = JSON?.parse(localStorage?.getItem("details"));
 
   //   return () => {
   //     setMerchantList(localStorageData || []);
@@ -28,13 +28,13 @@ const Signup = () => {
   // }, []);
 
   const getAllMerchants = async () => {
-    const getAllDataResponse = await axios.get(
+    const getAllDataResponse = await axios?.get(
       "http://localhost:5000/getAllMerchants"
     );
     // body: J;
     // console.log(getAllDataResponse?.data);
     setMerchantList(getAllDataResponse?.data);
-    return true;
+    return;
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Signup = () => {
   //   console.log(merchantList);
   // }, [merchantList]);
 
-  const updateMerchant = async (id) => {
+  const getMerchantById = async (id) => {
     const getEditDataResponse = await axios.put(
       `http://localhost:5000/getMerchant/${id}`,
       { id: id }
@@ -52,6 +52,29 @@ const Signup = () => {
     console.log(getEditDataResponse?.data);
     setFormValues(getEditDataResponse?.data);
     setButton("update");
+    localStorage.setItem("details", JSON.stringify(id));
+    return;
+  };
+  const updateMerchant = async (id) => {
+    console.log("id", id);
+    const updateDataResponse = await axios.put(
+      "http://localhost:5000/updateMerchant",
+      { id, formValues }
+    );
+
+    console.log("updatedata", updateDataResponse);
+
+    setMerchantList((previousMerchantsData) => {
+      const updatedResponse = previousMerchantsData.filter(
+        (merchant) => merchant?.id != id
+      );
+      return [...updatedResponse, updateDataResponse?.data];
+    });
+    // const oldMerchantDataRemovedList = merchantList.filter(
+    //   (merchant) => merchant?.id != id
+    // );
+    // oldMerchantDataRemovedList.push(formValues);
+    // setMerchantList(...oldMerchantDataRemovedList);
     return;
   };
 
@@ -60,17 +83,15 @@ const Signup = () => {
       `http://localhost:5000/deleteMerchant/${id}`
     );
     // console.log(id);
-    console.log("data", deleteDataResponse?.data);
+    // console.log("data", deleteDataResponse?.data);
 
     setMerchantList(deleteDataResponse?.data);
     return;
   };
-
-  const handleClick = async (event) => {
-    event.preventDefault();
-    // let localStorageData = JSON.parse(localStorage.getItem("details"));
-    // if (localStorageData === null) localStorageData = [];
-
+  // useEffect(() => {
+  //   deleteMerchant();
+  // }, []);
+  const createMerchant = async () => {
     try {
       const createMerchantResponse = await axios.post(
         "http://localhost:5000/createMerchant",
@@ -78,12 +99,28 @@ const Signup = () => {
       );
       console.log(createMerchantResponse?.data);
       // const newMerchantData = await createMerchantResponse?.json();
+
       setMerchantList((previousMerchantsData) => {
         return [...previousMerchantsData, createMerchantResponse?.data];
       });
       return;
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleClick = async (event) => {
+    event.preventDefault();
+
+    // let localStorageData = JSON.parse(localStorage.getItem("details"));
+    // if (localStorageData === null) localStorageData = [];
+
+    if (button == "submit") {
+      console.log("DSBH");
+      createMerchant();
+    } else if (button == "update") {
+      let idData = JSON.parse(localStorage.getItem("details"));
+      updateMerchant(idData);
     }
 
     // for (let i = 0; i < localStorageData.length; i++) {
@@ -485,8 +522,8 @@ const Signup = () => {
                   <button
                     type="submit"
                     id="editButton"
-                    // onClick={updateMerchant}
-                    onClick={() => updateMerchant(merchant?.id)}
+                    // onClick={getMerchantById}
+                    onClick={() => getMerchantById(merchant?.id)}
                   >
                     Edit
                   </button>
