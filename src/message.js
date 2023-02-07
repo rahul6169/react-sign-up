@@ -127,12 +127,35 @@ const Signup = () => {
 
   const handleClick = async (event) => {
     event.preventDefault();
+    const emailValidate = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const numberValidate = /^\d{10}$/;
+
+    if (!formValues.email.match(emailValidate)) {
+      alert("enter valid email ");
+    } else if (!formValues.contactEmail.match(emailValidate)) {
+      alert("enter valid contact Email");
+    } else if (!formValues.number.match(numberValidate)) {
+      alert("enter valid Phone number");
+    } else if (!formValues.contactPhoneNumber.match(numberValidate)) {
+      alert("enter valid contact Phone number");
+    }
 
     // let localStorageData = JSON.parse(localStorage.getItem("details"));
     // if (localStorageData === null) localStorageData = [];
-
-    if (button === "submit") {
+    else if (button === "submit") {
+      setLoading(true);
+      setButton(
+        <ReactLoading
+          id="submitButton"
+          type={"spokes"}
+          color={"skyblue"}
+          // height={"3%"}
+          // width={"3%"}
+        />
+      );
       createMerchant();
+      setLoading(false);
+      setButton("submit");
     } else if (button === "update") {
       let idData = JSON.parse(localStorage.getItem("details"));
       updateMerchant(idData);
