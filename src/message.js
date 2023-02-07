@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Signup = () => {
-  const [merchantList, setMerchantList] = useState();
+  const [merchantList, setMerchantList] = useState([]);
   const [button, setButton] = useState("submit");
   const [formValues, setFormValues] = useState({
     userName: "",
@@ -55,6 +55,7 @@ const Signup = () => {
     localStorage.setItem("details", JSON.stringify(id));
     return;
   };
+
   const updateMerchant = async (id) => {
     console.log("id", id);
     const updateDataResponse = await axios.put(
@@ -66,10 +67,13 @@ const Signup = () => {
 
     setMerchantList((previousMerchantsData) => {
       const updatedResponse = previousMerchantsData.filter(
-        (merchant) => merchant?.id != id
+        (merchant) => merchant?._id !== id
       );
+      console.log(id, "id");
+      console.log(updatedResponse, "1");
       return [...updatedResponse, updateDataResponse?.data];
     });
+
     // const oldMerchantDataRemovedList = merchantList.filter(
     //   (merchant) => merchant?.id != id
     // );
@@ -83,10 +87,11 @@ const Signup = () => {
       `http://localhost:5000/deleteMerchant/${id}`
     );
     // console.log(id);
-    // console.log("data", deleteDataResponse?.data);
+    console.log("data", deleteDataResponse?.data);
+    getAllMerchants();
 
-    setMerchantList(deleteDataResponse?.data);
-    return;
+    // setMerchantList(deleteDataResponse?.data);
+    // return;
   };
   // useEffect(() => {
   //   deleteMerchant();
@@ -115,10 +120,9 @@ const Signup = () => {
     // let localStorageData = JSON.parse(localStorage.getItem("details"));
     // if (localStorageData === null) localStorageData = [];
 
-    if (button == "submit") {
-      console.log("DSBH");
+    if (button === "submit") {
       createMerchant();
-    } else if (button == "update") {
+    } else if (button === "update") {
       let idData = JSON.parse(localStorage.getItem("details"));
       updateMerchant(idData);
     }
@@ -406,7 +410,6 @@ const Signup = () => {
               }}
               type="date"
               id="activefrom"
-              required
             ></input>
           </label>
         </div>
@@ -506,7 +509,7 @@ const Signup = () => {
           </thead>
           <tbody className="tableData">
             {merchantList?.map((merchant, index) => (
-              <tr key={merchant?.id + index}>
+              <tr key={merchant?._id + index}>
                 <td>{merchant?.userName}</td>
                 <td>{merchant?.email}</td>
                 <td>{merchant?.number}</td>
@@ -523,7 +526,7 @@ const Signup = () => {
                     type="submit"
                     id="editButton"
                     // onClick={getMerchantById}
-                    onClick={() => getMerchantById(merchant?.id)}
+                    onClick={() => getMerchantById(merchant?._id)}
                   >
                     Edit
                   </button>
@@ -532,7 +535,7 @@ const Signup = () => {
                   <button
                     type="submit"
                     id="deleteButton"
-                    onClick={() => deleteMerchant(merchant?.id)}
+                    onClick={() => deleteMerchant(merchant?._id)}
                   >
                     Delete
                   </button>
