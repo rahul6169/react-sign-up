@@ -68,6 +68,13 @@ select[multiple]{
 #criticalCheckBox{
     margin-left: 30px;
 }
+.loading{
+    color:red;
+    font-size: 40px;
+   
+    margin-top: 250px;
+    margin-left: 39rem;  
+}
 
 #submitButton {
     margin-left: 220px;
