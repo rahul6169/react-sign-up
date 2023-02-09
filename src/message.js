@@ -2,6 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ReactLoading from "react-loading";
+import { DeleteFilled } from "@ant-design/icons";
+import { Button } from "antd";
+import { EditFilled } from "@ant-design/icons/lib/icons";
 
 const Signup = () => {
   const [merchantList, setMerchantList] = useState([]);
@@ -127,22 +130,22 @@ const Signup = () => {
 
   const handleClick = async (event) => {
     event.preventDefault();
-    const emailValidate = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const numberValidate = /^\d{10}$/;
+    // const emailValidate = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    // const numberValidate = /^\d{10}$/;
 
-    if (!formValues.email.match(emailValidate)) {
-      alert("enter valid email ");
-    } else if (!formValues.contactEmail.match(emailValidate)) {
-      alert("enter valid contact Email");
-    } else if (!formValues.number.match(numberValidate)) {
-      alert("enter valid Phone number");
-    } else if (!formValues.contactPhoneNumber.match(numberValidate)) {
-      alert("enter valid contact Phone number");
-    }
+    // if (!formValues.email.match(emailValidate)) {
+    //   alert("enter valid email ");
+    // } else if (!formValues.contactEmail.match(emailValidate)) {
+    //   alert("enter valid contact Email");
+    // } else if (!formValues.number.match(numberValidate)) {
+    //   alert("enter valid Phone number");
+    // } else if (!formValues.contactPhoneNumber.match(numberValidate)) {
+    //   alert("enter valid contact Phone number");
+    // }
 
     // let localStorageData = JSON.parse(localStorage.getItem("details"));
     // if (localStorageData === null) localStorageData = [];
-    else if (button === "submit") {
+    if (button === "submit") {
       setLoading(true);
       setButton(
         <ReactLoading
@@ -159,6 +162,7 @@ const Signup = () => {
     } else if (button === "update") {
       let idData = JSON.parse(localStorage.getItem("details"));
       updateMerchant(idData);
+      setButton("submit");
     }
 
     // for (let i = 0; i < localStorageData.length; i++) {
@@ -301,7 +305,6 @@ const Signup = () => {
               }}
               id="contactName"
               placeholder="Enter Your Name"
-              required
             ></input>
           </div>
 
@@ -325,7 +328,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <label>Phone Number</label>
+            <label>Contact Number</label>
             <input
               type="tel"
               value={formValues.contactPhoneNumber}
@@ -341,7 +344,6 @@ const Signup = () => {
               minLength={5}
               maxLength={10}
               placeholder="Enter Contact Number"
-              required
             ></input>
           </div>
 
@@ -469,11 +471,12 @@ const Signup = () => {
                   };
                 });
               }}
-              className={"payments"}
+              className="payments"
             >
               Payment Option<br></br>
               <input
                 type="checkbox"
+                className="payments"
                 name="payment"
                 value="Cash on delivery"
                 id="cashOnDelivery"
@@ -540,16 +543,16 @@ const Signup = () => {
           <table id="list">
             <thead>
               <tr>
-                <th>userName</th>
-                <th>email</th>
-                <th>phoneNumber</th>
-                <th>contactName</th>
-                <th>contactEmail</th>
-                <th>contactPhoneNumber</th>
-                <th>type</th>
-                <th>percent</th>
-                <th>activefrom</th>
-                <th>payments</th>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Contact Name</th>
+                <th>Contact Email</th>
+                <th>Contact Phone Number</th>
+                <th>Type</th>
+                <th>Percent</th>
+                <th>Activefrom</th>
+                <th>Payments</th>
                 <th>Notes</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -570,23 +573,36 @@ const Signup = () => {
                   <td>{merchant?.payments}</td>
                   <td>{merchant?.notesInput}</td>
                   <td>
-                    <button
+                    {/* <button
                       type="submit"
                       id="editButton"
                       // onClick={getMerchantById}
-                      onClick={() => getMerchantById(merchant?._id)}
+                      
                     >
                       Edit
-                    </button>
+                    </button> */}
+                    <Button
+                      type="dark"
+                      shape="round"
+                      icon={<EditFilled />}
+                      onClick={() => getMerchantById(merchant?._id)}
+                    ></Button>
                   </td>
                   <td>
-                    <button
+                    {/* <button
                       type="submit"
                       id="deleteButton"
-                      onClick={() => deleteMerchant(merchant?._id)}
+                     
                     >
                       Delete
-                    </button>
+                    </button> */}
+
+                    <Button
+                      type="dark"
+                      shape="round"
+                      icon={<DeleteFilled />}
+                      onClick={() => deleteMerchant(merchant?._id)}
+                    ></Button>
                   </td>
                 </tr>
               ))}
