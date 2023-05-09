@@ -30,6 +30,14 @@ input[type=text],[type=email],[type=tel],[type=number],[type=date]{
     margin-left: 200px;
     
 }
+.dateClass{
+    text-align: center;
+    background: transparent;
+    width:18rem;
+    height:3rem;
+    border-color: white;
+    margin-left: 200px;
+}
 textarea{
     margin-left:200px;
     background:transparent;
@@ -60,6 +68,10 @@ input[type=radio]{
 }
 input[type=checkbox]{
     margin-left: 200px;
+}
+.payments{
+    margin-left: 200px;
+
 }
 select[multiple]{
     background-color:gray;

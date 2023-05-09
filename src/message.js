@@ -3,13 +3,23 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ReactLoading from "react-loading";
 import { DeleteFilled } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, Checkbox } from "antd";
 import { EditFilled } from "@ant-design/icons/lib/icons";
 
+import { render } from "react-dom";
+import { DatePicker, message } from "antd";
 const Signup = () => {
   const [merchantList, setMerchantList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [button, setButton] = useState("submit");
+  const [date, setDate] = useState(null);
+  const handleChange = (value) => {
+    message.info(
+      `Selected Date: ${value ? value.format("YYYY-MM-DD") : "None"}`
+    );
+    setDate(value);
+  };
+
   const [formValues, setFormValues] = useState({
     userName: "",
     email: "",
@@ -214,7 +224,7 @@ const Signup = () => {
 
   return (
     <>
-      {loading ? (
+      {/* {loading ? (
         // <p className="loading">Loading...</p>
         <ReactLoading
           className="loading"
@@ -223,230 +233,230 @@ const Signup = () => {
           height={"3%"}
           width={"3%"}
         />
-      ) : (
-        <form onSubmit={handleClick} id="newBusiness">
-          <h2>
-            <em>New Business </em>
-          </h2>
+      ) : ( */}
+      <form onSubmit={handleClick} id="newBusiness">
+        <h2>
+          <em>New Business </em>
+        </h2>
 
-          <div>
-            <label>User Name </label>
+        <div>
+          <label>User Name </label>
+          <input
+            type="text"
+            value={formValues.userName}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  userName: e.target.value,
+                };
+              });
+            }}
+            id="userName"
+            name="userName"
+            placeholder="Enter Your Name"
+            required
+          ></input>
+        </div>
+
+        <div>
+          <label>Email </label>
+          <input
+            type="email"
+            value={formValues.email}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  email: e.target.value,
+                };
+              });
+            }}
+            id="email"
+            placeholder="Enter Your Email"
+            required
+          ></input>
+        </div>
+
+        <div>
+          <label>Phone Number</label>
+          <input
+            type="tel"
+            value={formValues.number}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  number: e.target.value,
+                };
+              });
+              // console.log(formValues.number);
+            }}
+            id="phoneNumber"
+            minLength={5}
+            maxLength={10}
+            placeholder="Enter Your Number"
+            required
+          ></input>
+        </div>
+
+        <div>
+          <label>Contact Name </label>
+          <input
+            type="text"
+            value={formValues.contactName}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  contactName: e.target.value,
+                };
+              });
+            }}
+            id="contactName"
+            placeholder="Enter Your Name"
+          ></input>
+        </div>
+
+        <div>
+          <label> Contact Email </label>
+          <input
+            type="email"
+            value={formValues.contactEmail}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  contactEmail: e.target.value,
+                };
+              });
+            }}
+            id="contactEmail"
+            placeholder="Enter Contact Email"
+            required
+          ></input>
+        </div>
+
+        <div>
+          <label>Contact Number</label>
+          <input
+            type="tel"
+            value={formValues.contactPhoneNumber}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  contactPhoneNumber: e.target.value,
+                };
+              });
+            }}
+            id="contactPhoneNumber"
+            minLength={5}
+            maxLength={10}
+            placeholder="Enter Contact Number"
+          ></input>
+        </div>
+
+        <div>
+          <label id="typeOfBusiness" className="radioValue">
+            Type <br></br>
             <input
-              type="text"
-              value={formValues.userName}
+              type="radio"
+              value={formValues.type}
               onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    userName: e.target.value,
-                  };
+                setFormValues({
+                  ...formValues,
+                  type: e.target.id,
                 });
               }}
-              id="userName"
-              name="userName"
-              placeholder="Enter Your Name"
-              required
-            ></input>
-          </div>
+              id="smallBusiness"
+              name="Business"
 
-          <div>
-            <label>Email </label>
+              // value="SmallBusiness"
+            />
+            <label htmlFor="smallBusiness">Small Business </label>
+            <br></br>
             <input
-              type="email"
-              value={formValues.email}
+              type="radio"
+              value={formValues.type}
               onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    email: e.target.value,
-                  };
+                setFormValues({
+                  ...formValues,
+                  type: e.target.id,
                 });
               }}
-              id="email"
-              placeholder="Enter Your Email"
-              required
-            ></input>
-          </div>
-
-          <div>
-            <label>Phone Number</label>
+              id="enterprise"
+              name="Business"
+              // checked={id}
+              // value="Enterprise"
+            />
+            <label htmlFor="enterprise">Enterprise</label>
+            <br></br>
             <input
-              type="tel"
-              value={formValues.number}
+              type="radio"
+              value={formValues.type}
               onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    number: e.target.value,
-                  };
-                });
-                // console.log(formValues.number);
-              }}
-              id="phoneNumber"
-              minLength={5}
-              maxLength={10}
-              placeholder="Enter Your Number"
-              required
-            ></input>
-          </div>
-
-          <div>
-            <label>Contact Name </label>
-            <input
-              type="text"
-              value={formValues.contactName}
-              onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    contactName: e.target.value,
-                  };
+                setFormValues({
+                  ...formValues,
+                  type: e.target.id,
                 });
               }}
-              id="contactName"
-              placeholder="Enter Your Name"
-            ></input>
-          </div>
+              id="entrepreneur"
+              name="Business"
+              // checked={id}
+              // value="Entrepreneur"
+            />
+            <label htmlFor="entrepreneur">Entrepreneur</label>
+          </label>
+        </div>
 
-          <div>
-            <label> Contact Email </label>
+        <div>
+          <label htmlFor="catogory" className="catogoryy">
+            Catogory<br></br>
+            <select id="catogory" multiple size="5">
+              <option name="catogory" value="toys">
+                Toys
+              </option>
+              <option name="catogory" value="clothes">
+                Clothes
+              </option>
+              <option name="catogory" value="groceries">
+                groceries
+              </option>
+              <option name="catogory" value="Electronics">
+                Electronics
+              </option>
+              <option name="catogory" value="Digital">
+                Digital
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <div>
+          <label>
+            Percent
             <input
-              type="email"
-              value={formValues.contactEmail}
+              value={formValues.percent}
               onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    contactEmail: e.target.value,
-                  };
+                setFormValues({
+                  ...formValues,
+                  percent: e.target.value,
                 });
               }}
-              id="contactEmail"
-              placeholder="Enter Contact Email"
-              required
+              type="number"
+              id="percent"
+              min="0"
+              max="100"
+              size="3"
             ></input>
-          </div>
+          </label>
+        </div>
 
-          <div>
-            <label>Contact Number</label>
-            <input
-              type="tel"
-              value={formValues.contactPhoneNumber}
-              onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    contactPhoneNumber: e.target.value,
-                  };
-                });
-              }}
-              id="contactPhoneNumber"
-              minLength={5}
-              maxLength={10}
-              placeholder="Enter Contact Number"
-            ></input>
-          </div>
-
-          <div>
-            <label id="typeOfBusiness" className="radioValue">
-              Type <br></br>
-              <input
-                type="radio"
-                value={formValues.type}
-                onChange={(e) => {
-                  setFormValues({
-                    ...formValues,
-                    type: e.target.id,
-                  });
-                }}
-                id="smallBusiness"
-                name="Business"
-
-                // value="SmallBusiness"
-              />
-              <label htmlFor="smallBusiness">Small Business </label>
-              <br></br>
-              <input
-                type="radio"
-                value={formValues.type}
-                onChange={(e) => {
-                  setFormValues({
-                    ...formValues,
-                    type: e.target.id,
-                  });
-                }}
-                id="enterprise"
-                name="Business"
-                // checked={id}
-                // value="Enterprise"
-              />
-              <label htmlFor="enterprise">Enterprise</label>
-              <br></br>
-              <input
-                type="radio"
-                value={formValues.type}
-                onChange={(e) => {
-                  setFormValues({
-                    ...formValues,
-                    type: e.target.id,
-                  });
-                }}
-                id="entrepreneur"
-                name="Business"
-                // checked={id}
-                // value="Entrepreneur"
-              />
-              <label htmlFor="entrepreneur">Entrepreneur</label>
-            </label>
-          </div>
-
-          <div>
-            <label htmlFor="catogory" className="catogoryy">
-              Catogory<br></br>
-              <select id="catogory" multiple size="5">
-                <option name="catogory" value="toys">
-                  Toys
-                </option>
-                <option name="catogory" value="clothes">
-                  Clothes
-                </option>
-                <option name="catogory" value="groceries">
-                  groceries
-                </option>
-                <option name="catogory" value="Electronics">
-                  Electronics
-                </option>
-                <option name="catogory" value="Digital">
-                  Digital
-                </option>
-              </select>
-            </label>
-          </div>
-
-          <div>
-            <label>
-              Percent
-              <input
-                value={formValues.percent}
-                onChange={(e) => {
-                  setFormValues({
-                    ...formValues,
-                    percent: e.target.value,
-                  });
-                }}
-                type="number"
-                id="percent"
-                min="0"
-                max="100"
-                size="3"
-              ></input>
-            </label>
-          </div>
-
-          <div>
-            <label>
-              Active from
-              <input
+        <div>
+          <label>
+            Active from
+            {/* <input
                 value={formValues.dateInput}
                 onChange={(e) => {
                   setFormValues({
@@ -456,124 +466,145 @@ const Signup = () => {
                 }}
                 type="date"
                 id="activefrom"
-              ></input>
-            </label>
-          </div>
-
-          <div>
-            <label
-              value={formValues.payments}
+              ></input> */}
+            <DatePicker
+              className="dateClass"
+              id="activefrom"
+              // value={formValues.dateInput}
               onChange={(e) => {
-                setFormValues((prev) => {
-                  return {
-                    ...prev,
-                    payments: e.target.value,
-                  };
+                setFormValues({
+                  ...formValues,
+                  dateInput: e.target.id,
                 });
               }}
-              className="payments"
-            >
-              Payment Option<br></br>
-              <input
+            />
+          </label>
+        </div>
+
+        <div>
+          <label
+            value={formValues.payments}
+            onChange={(e) => {
+              setFormValues((prev) => {
+                return {
+                  ...prev,
+                  payments: e.target.value,
+                };
+              });
+            }}
+            className="payments"
+          >
+            ,,, Payment Option<br></br>
+            {/* <input
                 type="checkbox"
                 className="payments"
                 name="payment"
                 value="Cash on delivery"
                 id="cashOnDelivery"
                 placeholder="cash on delivery"
-              />
-              <label htmlFor="cashOnDelivery">Cash on delivery</label>
-              <br></br>
-              <input
-                type="checkbox"
-                name="payment"
-                value="UPI"
-                id="UPI"
-                placeholder="payment"
-              />
-              <label htmlFor="UPI">UPI</label>
-              <br></br>
-              <input
-                type="checkbox"
-                name="payment"
-                value="card payment"
-                id="cardPayment"
-                placeholder="cardPayment"
-              />
-              <label htmlFor="cardPayment">Card Payment</label>
-            </label>
-          </div>
+              /> */}
+            <Checkbox
+              type="checkbox"
+              className="payments"
+              name="payment"
+              value="Cash on delivery"
+              id="cashOnDelivery"
+              placeholder="cash on delivery"
+            >
+              Cash On Delivery
+            </Checkbox>
+            {/* <label htmlFor="cashOnDelivery">Cash on delivery</label> */}
+            <br></br>
+            <input
+              type="checkbox"
+              name="payment"
+              value="UPI"
+              id="UPI"
+              placeholder="payment"
+            />
+            <label htmlFor="UPI">UPI</label>
+            <br></br>
+            <input
+              type="checkbox"
+              name="payment"
+              value="card payment"
+              id="cardPayment"
+              placeholder="cardPayment"
+            />
+            <label htmlFor="cardPayment">Card Payment</label>
+          </label>
+        </div>
 
-          <div>
-            <label>
-              Notes<br></br>
-              <textarea
-                id="textArea"
-                value={formValues.notesInput}
-                onChange={(e) => {
-                  setFormValues({
-                    ...formValues,
-                    notesInput: e.target.value,
-                  });
-                }}
-                cols={30}
-                rows="5"
-              ></textarea>
-            </label>
-          </div>
+        <div>
+          <label>
+            Notes<br></br>
+            <textarea
+              id="textArea"
+              value={formValues.notesInput}
+              onChange={(e) => {
+                setFormValues({
+                  ...formValues,
+                  notesInput: e.target.value,
+                });
+              }}
+              cols={30}
+              rows="5"
+            ></textarea>
+          </label>
+        </div>
 
-          <div>
-            <label>
-              Critical Account
-              <input type="checkbox" id="criticalCheckBox"></input>
-            </label>
-          </div>
+        <div>
+          <label>
+            Critical Account
+            <input type="checkbox" id="criticalCheckBox"></input>
+          </label>
+        </div>
 
-          <div>
-            <button type="submit" id="submitButton" value="Submit">
-              {button}
-            </button>
-          </div>
-        </form>
-      )}
-      {loading ? (
+        <div>
+          <button type="submit" id="submitButton" value="Submit">
+            {button}
+          </button>
+        </div>
+      </form>
+      {/* )} */}
+      {/* {loading ? (
         <p className="loading"></p>
-      ) : (
-        <div className="table-data">
-          <table id="list">
-            <thead>
-              <tr>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Contact Name</th>
-                <th>Contact Email</th>
-                <th>Contact Phone Number</th>
-                <th>Type</th>
-                <th>Percent</th>
-                <th>Activefrom</th>
-                <th>Payments</th>
-                <th>Notes</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody className="tableData">
-              {merchantList?.map((merchant, index) => (
-                <tr key={merchant?._id + index}>
-                  <td>{merchant?.userName}</td>
-                  <td>{merchant?.email}</td>
-                  <td>{merchant?.number}</td>
-                  <td>{merchant?.contactName}</td>
-                  <td>{merchant?.contactEmail}</td>
-                  <td>{merchant?.contactPhoneNumber}</td>
-                  <td>{merchant?.type}</td>
-                  <td>{merchant?.percent}</td>
-                  <td>{merchant?.dateInput}</td>
-                  <td>{merchant?.payments}</td>
-                  <td>{merchant?.notesInput}</td>
-                  <td>
-                    {/* <button
+      ) : ( */}
+      <div className="table-data">
+        <table id="list">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Contact Name</th>
+              <th>Contact Email</th>
+              <th>Contact Phone Number</th>
+              <th>Type</th>
+              <th>Percent</th>
+              <th>Activefrom</th>
+              <th>Payments</th>
+              <th>Notes</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody className="tableData">
+            {merchantList?.map((merchant, index) => (
+              <tr key={merchant?._id + index}>
+                <td>{merchant?.userName}</td>
+                <td>{merchant?.email}</td>
+                <td>{merchant?.number}</td>
+                <td>{merchant?.contactName}</td>
+                <td>{merchant?.contactEmail}</td>
+                <td>{merchant?.contactPhoneNumber}</td>
+                <td>{merchant?.type}</td>
+                <td>{merchant?.percent}</td>
+                <td>{merchant?.dateInput}</td>
+                <td>{merchant?.payments}</td>
+                <td>{merchant?.notesInput}</td>
+                <td>
+                  {/* <button
                       type="submit"
                       id="editButton"
                       // onClick={getMerchantById}
@@ -581,15 +612,15 @@ const Signup = () => {
                     >
                       Edit
                     </button> */}
-                    <Button
-                      type="dark"
-                      shape="round"
-                      icon={<EditFilled />}
-                      onClick={() => getMerchantById(merchant?._id)}
-                    ></Button>
-                  </td>
-                  <td>
-                    {/* <button
+                  <Button
+                    type="dark"
+                    shape="round"
+                    icon={<EditFilled />}
+                    onClick={() => getMerchantById(merchant?._id)}
+                  ></Button>
+                </td>
+                <td>
+                  {/* <button
                       type="submit"
                       id="deleteButton"
                      
@@ -597,19 +628,19 @@ const Signup = () => {
                       Delete
                     </button> */}
 
-                    <Button
-                      type="dark"
-                      shape="round"
-                      icon={<DeleteFilled />}
-                      onClick={() => deleteMerchant(merchant?._id)}
-                    ></Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                  <Button
+                    type="dark"
+                    shape="round"
+                    icon={<DeleteFilled />}
+                    onClick={() => deleteMerchant(merchant?._id)}
+                  ></Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {/* )} */}
     </>
   );
 };
