@@ -122,7 +122,7 @@ const Signup = () => {
     try {
       setLoading(true);
       const createMerchantResponse = await axios.post(
-        "http://localhost:5000/createMerchant",
+        "http://localhost:3333/createMerchant",
         { formValues }
       );
       console.log(createMerchantResponse?.data);
